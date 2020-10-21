@@ -159,3 +159,22 @@ export const putUserUpdate = (data, id) => {
       })
   }
 }
+
+export const deleteUser = (id) => {
+  return dispatch => {
+    axios
+      .delete("http://my-json-server.typicode.com/ivanovitcz/reactjs-redux-fakeapi/users/"+id)
+      .then(function (response) {
+        console.log(response);
+        
+        // handle success
+        // console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+        
+        // handle error
+        // console.log(error);
+      })
+  }
+}
