@@ -1,12 +1,13 @@
 import React from 'react'
 
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Container, Button } from 'reactstrap';
+import { Container, Button, Spinner } from 'reactstrap';
 import { faInfo, faEdit, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const columns = [{
   dataField: 'id',
@@ -57,13 +58,20 @@ const defaultSorted = [{
 
 const { SearchBar } = Search;
 
+const mapStateToProps = (state) => {
+  return {
+    getUserList: state.users.getUserList,
+    errorUserList: state.users.errorUserList
+  }
+}
 const TableComponent = (props) => {
   return (
     <Container>
+       { ( props.getUserList ) ? 
       <ToolkitProvider
         bootstrap4
         keyField="id"
-        data={props.users}
+        data={props.getUserList}
         columns={columns}
         defaultSorted={defaultSorted}
         search
@@ -89,9 +97,13 @@ const TableComponent = (props) => {
             />
           </div>
         )}
-      </ToolkitProvider>
+      </ToolkitProvider> : 
+      <div className="text-center">
+        { props.errorUserList ? <h1> {props.errorUserList} </h1> :  <Spinner color="dark" /> }
+      </div> 
+    }
     </Container>
   );
 }
 
-export default TableComponent
+export default connect(mapStateToProps, null)(TableComponent);
